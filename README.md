@@ -6,3 +6,8 @@ See it in action:
 
 ## Usage
 It is intended to be used as a standalone script. Simply run (or daemonize if you prefer) `i3ifiedesk.py` as long as the two scripts are in the same working directory. No configurations needed since the script will adapt to your custom keybindings for desktop switching.
+
+## TODO
+- [ ] Capture "Next/Prev Desktop" shortcuts
+- [ ] Better detection before closing empty desktops
+- [ ] Bug fixes

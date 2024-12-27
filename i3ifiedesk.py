@@ -83,11 +83,17 @@ class i3ifiedesk:
                     "createDesktop", target, f"Desktop {target}")
                 self.shortcuts_manager.call('invokeShortcut', action)
 
+    def handle_close_desktops(self, action):
+        pattern = r"Close Empty Desktops"
+        match = re.search(pattern, str(action))
+        if not match:
+            self.shortcuts_manager.call(
+                'invokeShortcut', 'Close Empty Desktops')
+
     def on_shortcut_pressed(self, component, action, shortcuts):
         self.handle_desktop_switch(action)
         self.handle_window_move(action)
-
-        self.shortcuts_manager.call('invokeShortcut', 'Close Empty Desktops')
+        self.handle_close_desktops(action)
 
 
 if __name__ == "__main__":

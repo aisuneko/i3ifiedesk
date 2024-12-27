@@ -34,11 +34,6 @@ class i3ifiedesk:
             dbus_interface="org.kde.kglobalaccel.Component",
             signal_name="globalShortcutPressed"
         )
-        self.bus.add_signal_receiver(
-            self.on_desktop_change,
-            dbus_interface="org.kde.KWin.VirtualDesktopManager",
-            signal_name="currentChanged"
-        )
         self.desktop_manager = DBusObject(
             self.bus, 'org.kde.KWin', '/VirtualDesktopManager', 'org.kde.KWin.VirtualDesktopManager')
         self.kwin_manager = DBusObject(
@@ -94,9 +89,13 @@ class i3ifiedesk:
 
         self.shortcuts_manager.call('invokeShortcut', 'Close Empty Desktops')
 
-    def on_desktop_change(self, current):
-        self.shortcuts_manager.call('invokeShortcut', 'Close Empty Desktops')
-
 
 if __name__ == "__main__":
+    # make systemd happy
+    bus_address = os.getenv('DBUS_SESSION_BUS_ADDRESS')
+    if not bus_address:
+        with open(f"/run/user/{os.getuid()}/bus") as f:
+            bus_address = f.read().strip()
+    os.environ['DBUS_SESSION_BUS_ADDRESS'] = bus_address
+
     i3ifiedesk()
